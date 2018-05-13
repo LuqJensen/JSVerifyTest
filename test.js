@@ -61,14 +61,16 @@ var isInteger = jsc.checkForall(jsc.integer, (a) => math.isInteger(a) == true);
 
 var isNaN = jsc.checkForall(jsc.number, (a) => math.isNaN(a) == false);
 
-var isNegative = jsc.checkForall(jsc.integer(-100,-1), (a) => math.isNegative(a) == true);
+var isNegative = jsc.checkForall(jsc.integer(-100,-1), (a) => math.isNegative(a) === a<0);
 
 //Apparently 0 is not numeric.
 var isNumeric = jsc.checkForall(jsc.number, (a) => math.isNumeric == true);
 
 //0 is not positive pr. definition
-var isPositive = jsc.checkForall(jsc.integer(1,99), (a) => math.isPositive(a) == true);
+var isPositive = jsc.checkForall(jsc.integer(1,99), (a) => math.isPositive(a) === a>0);
+
+var isZero = jsc.checkForall(jsc.integer(), (a) => math.isZero(a) === (a==0)); 
 
 
 console.log({sqrtIsReversible, additionIsCommutative, adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive, absIsPositive, absIsNotAlways0,
-   modIsDonaldKnuth, modIsNotDivision, floorIsNotTheCulprit, sortIsConsistent, isInteger, isNaN, isPositive, isNegative, isNumeric});
+   modIsDonaldKnuth, modIsNotDivision, floorIsNotTheCulprit, sortIsConsistent, isInteger, isNaN, isPositive, isNegative, isNumeric, isZero});
