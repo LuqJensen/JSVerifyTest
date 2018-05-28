@@ -64,6 +64,18 @@ var fixIsAlwaysCloserToZero = jsc.checkForall(jsc.number, (a) => {
         return math.ceil(a) === result;
 });
 
+var roundIsEitherFloorOrCeil = jsc.checkForall(jsc.number, (a) => {
+    if (a === 0)
+        return true;
+    let round = math.round(a);
+    let result = (round === math.floor(a)) ^ (round === math.ceil(a));
+    
+    // Apparently javascript returns binary results when using logical operators &&, ||, ^...
+    // and jsverify does not accept 1 as true for a test, despite it being a truthy value in javascript...
+    // so we result to dumb code.
+    return result == true;
+});
+
 var sortIsConsistent = jsc.checkForall(jsc.integer(1, 98), (length) => {
     let matrix = Array.from({length: length}, () => jsc.random(-(Math.pow(2,31) - 1), Math.pow(2,31)- 1));
     // Ensure we have duplicates in the matrix.
@@ -71,6 +83,7 @@ var sortIsConsistent = jsc.checkForall(jsc.integer(1, 98), (length) => {
     matrix.push(2);
     return math.sort(matrix) === math.sort(math.sort(matrix));
 });
+
 
 // Util
 //TODO: figure out test for math.clone(x)
@@ -92,5 +105,6 @@ var isZero = jsc.checkForall(jsc.integer, (a) => math.isZero(a) === (a === 0));
 
 console.log({sqrtIsReversible, additionIsCommutative, adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive, absIsPositive, absIsNotAlways0,
    modIsDonaldKnuth, modIsNotDivision, specificationWorks1, specificationWorks2, modImplementationHonorsSpecification, floorIsNotTheCulprit,
-   fixIsAlwaysCloserToZero,
+   fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil,
    sortIsConsistent, isInteger, isNaN, isPositive, isNegative, isNumeric, isZero});
+   
