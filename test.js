@@ -132,7 +132,7 @@ var isNegative = jsc.checkForall(jsc.integer, (a) => math.isNegative(a) === a < 
 var isNumeric = jsc.checkForall(jsc.number, (a) => math.isNumeric(a));
 
 //0 is not positive pr. definition
-var isPositive = jsc.checkForall(jsc.integer, (a) => math.isPositive(a) === a > 0);
+var isPositive = jsc.checkForall(jsc.nat, (a) => math.isPositive(a));
 
 var isZero = jsc.checkForall(jsc.integer, (a) => math.isZero(a) === (a === 0)); 
 
@@ -176,12 +176,12 @@ var matrixArb = (x, y) => jsc.bless({
     show: (val) => val
 });
 
-
+/*
 jsc.checkForall(matrixArb(), (x) => {
     //console.log(math.size(x));
     return true;
 });
-
+*/
 
 //Test that deepequal always returns true on equal matrices 
 var deepEqualTrue = jsc.checkForall(matrixArb(), (a) => math.deepEqual(a,a));
@@ -226,3 +226,54 @@ var associativeOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), matr
 
 //Closure property of addition: A+B has the same dimansions as A and B
 var closureOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), (a,b) => math.deepEqual(math.size(math.add(a,b)),math.size(a)) && math.deepEqual(math.size(math.add(a,b)),math.size(b))); 
+
+
+
+
+
+//Check inverse relationship between exp and log: log(exp(a)) = a 
+var expLog = jsc.checkForall(jsc.integer, (a) => math.log(math.exp(a)) === a);
+
+//Check inverse relationship between expm1 and log: log(expm1(a)+1) = a
+//Fails for many negatives values, proably due to floating point errors. 
+var expm1Log = jsc.checkForall(jsc.integer, (a) => math.equal(math.log(math.add(math.expm1(a), 1)), a)); 
+//console.log(math.log(math.expm1(-37)+1))  //Difference of > 0.26!
+
+//Check relationship between exp and expm1 (exponent minus one): exp(a) -1 = expm1(a) 
+var expExpm1 = jsc.checkForall(jsc.integer, (a) => math.equal(math.exp(a)-1, math.expm1(a))); 
+
+//Inverse relationship between 2'nd pow and sqrt: sqrt(pow(a,2)) = abs(a)
+var sqrtPow = jsc.checkForall(jsc.integer, (a) => math.equal(math.sqrt(math.pow(a, 2)), math.abs(a) )); 
+
+//Square should always be positive 
+var squareIsPositive = jsc.checkForall(jsc.integer, (a) => math.square(a) >= 0);
+
+//The second power should always be positive 
+var pow2IsPositive = jsc.checkForall(jsc.integer, (a) => math.pow(a, 2) >= 0); 
+
+//Relationship between square and pow: square(a) = pow(a, 2)
+var sqrtSquare = jsc.checkForall(jsc.integer, (a) => math.equal(math.pow(a,2), math.square(a)));
+
+//Relationship between n'th root and pow: n'thRoot(pow(a,b), b = a)
+var nthRootAndPow = jsc.checkForall(jsc.integer(1,9), jsc.integer(1,9), (a, b) => math.equal(math.nthRoot(math.pow(a,b), b), a ));
+
+
+
+//Test relational functions 
+//--------------------------
+
+
+//Test larger: a>b
+var largerInts = jsc.checkForall(jsc.integer, jsc.integer, (a,b) => math.larger(a,b) === (a > b)); 
+
+//Test largerEq: a>=b
+var largerInts = jsc.checkForall(jsc.integer, jsc.integer, (a,b) => math.largerEq(a,b) === (a >= b)); 
+
+//Test smaller: a<b
+var uneralInts = jsc.checkForall(jsc.integer, jsc.integer, (a,b) => math.smaller(a,b) === (a < b)); 
+
+//Test smallerEq: a<=b
+var uneralInts = jsc.checkForall(jsc.integer, jsc.integer, (a,b) => math.smallerEq(a,b) === (a <= b)); 
+
+//Test unequal: a!=b
+var uneralInts = jsc.checkForall(jsc.integer, jsc.integer, (a,b) => math.unequal(a,b) === (a !== b)); 
