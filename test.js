@@ -111,10 +111,27 @@ var hexArb = (maxLength) => jsc.bless({
     generator: jsc.generator.bless(() => {
         let maxInt = Math.pow(2, maxLength * 4);
         return jsc.random(0, maxInt).toString(16).toUpperCase();
-    })
+    }),
+    show: (val) => val
 });
 
 jsc.checkForall(hexArb(8), (x) => {
+    console.log(x);
+    return true;
+});
+
+var matrixArb = (x, y) => jsc.bless({
+    generator: jsc.generator.bless(() => {
+        let parent = Array.apply(null, new Array(x));
+        return parent.map((a, b) => {
+            let child = Array.apply(null, new Array(y));
+            return child.map((c, d) => jsc.random(-(Math.pow(2,31) - 1), Math.pow(2,31) - 1));
+        });
+    }),
+    show: (val) => val
+});
+
+jsc.checkForall(matrixArb(3, 3), (x) => {
     console.log(x);
     return true;
 });
