@@ -65,8 +65,6 @@ var fixIsAlwaysCloserToZero = jsc.checkForall(jsc.number, (a) => {
 });
 
 var roundIsEitherFloorOrCeil = jsc.checkForall(jsc.number, (a) => {
-    if (a === 0)
-        return true;
     let round = math.round(a);
     let result = (round === math.floor(a)) ^ (round === math.ceil(a));
     
@@ -106,5 +104,18 @@ var isZero = jsc.checkForall(jsc.integer, (a) => math.isZero(a) === (a === 0));
 console.log({sqrtIsReversible, additionIsCommutative, adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive, absIsPositive, absIsNotAlways0,
    modIsDonaldKnuth, modIsNotDivision, specificationWorks1, specificationWorks2, modImplementationHonorsSpecification, floorIsNotTheCulprit,
    fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil,
-   sortIsConsistent, isInteger, isNaN, isPositive, isNegative, isNumeric, isZero});
+   sortIsConsistent, isInteger, isNaN, isPositive, isNegative, isNumeric, isZero
+});
+
+var hexArb = (maxLength) => jsc.bless({
+    generator: jsc.generator.bless(() => {
+        let maxInt = Math.pow(2, maxLength * 4);
+        return jsc.random(0, maxInt).toString(16).toUpperCase();
+    })
+});
+
+jsc.checkForall(hexArb(8), (x) => {
+    console.log(x);
+    return true;
+});
    
