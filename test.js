@@ -50,6 +50,8 @@ var modImplementationHonorsSpecification = jsc.checkForall(jsc.integer, jsc.inte
 // That does not appear to be the case.
 var floorIsNotTheCulprit = jsc.checkForall(jsc.number, (a) => math.floor(a) <= a && a - math.floor(a) < 1);
 
+var ceilingIsAlwaysLargerOrEqual = jsc.checkForall(jsc.number, (a) => math.ceil(a) >= a && a - math.floor(a) < 1);
+
 var fixIsAlwaysCloserToZero = jsc.checkForall(jsc.number, (a) => {
     if (math.equal(a, 0)) 
         return true;
@@ -65,6 +67,9 @@ var fixIsAlwaysCloserToZero = jsc.checkForall(jsc.number, (a) => {
 });
 
 var roundIsEitherFloorOrCeil = jsc.checkForall(jsc.number, (a) => {
+    if (a === 0)
+        return true;
+
     let round = math.round(a);
     let result = (round === math.floor(a)) ^ (round === math.ceil(a));
     
@@ -74,6 +79,21 @@ var roundIsEitherFloorOrCeil = jsc.checkForall(jsc.number, (a) => {
     return result == true;
 });
 
+
+var unaryMinusInversesValue = jsc.checkForall(jsc.integer, (a) => math.unaryMinus(a) === 0 - a);
+
+//var unaryPlusConvertsFalsyToZero = jsc.checkForall(jsc.falsy, (a) => math.unaryPlus(a) === 0);
+
+var cubedEqualsCubedCubeRoot = jsc.checkForall(jsc.integer(-Math.pow(2, 15), Math.pow(2, 15)), (a) => math.cbrt(math.cube(a)) === a);
+
+// Docs state that math provides a log2 function http://mathjs.org/docs/reference/functions/log2.html
+// exc: TypeError: math.log2 is not a function
+var log2SucceedsForCommonIntegers = jsc.checkForall(jsc.integer(-128, 128), (a) => math.abs(math.log2(Math.pow(2, a)) - a) < 0.0001);
+
+var normalLogSucceedsForCommonIntegers = jsc.checkForall(jsc.integer(-128, 128), (a) => math.abs(math.log(Math.pow(2, a), 2) - a) < 0.0001);
+
+var sign = jsc.checkForall(jsc.integer, (a) => a === 0 ? math.sign(a) === 0 : (a > 0 ? math.sign(a) === 1 : math.sign(a) === -1));
+
 var sortIsConsistent = jsc.checkForall(jsc.integer(1, 98), (length) => {
     let matrix = Array.from({length: length}, () => jsc.random(-(Math.pow(2,31) - 1), Math.pow(2,31)- 1));
     // Ensure we have duplicates in the matrix.
@@ -81,6 +101,22 @@ var sortIsConsistent = jsc.checkForall(jsc.integer(1, 98), (length) => {
     matrix.push(2);
     return math.sort(matrix) === math.sort(math.sort(matrix));
 });
+
+// logical
+var dominationAnd = jsc.checkForall(jsc.bool, (a) => math.and(a, false) === false);
+var identityAnd = jsc.checkForall(jsc.bool, (a) => math.and(a, true) === a);
+var idempotentAnd = jsc.checkForall(jsc.bool, (a) => math.and(a, a) === a);
+var negationAnd = jsc.checkForall(jsc.bool, (a) => math.and(a, !a) === false);
+
+var dominationOr = jsc.checkForall(jsc.bool, (a) => math.or(a, true) === true);
+var identityOr = jsc.checkForall(jsc.bool, (a) => math.or(a, false) === a);
+var idempotentOr = jsc.checkForall(jsc.bool, (a) => math.or(a, a) === a);
+var negationOr = jsc.checkForall(jsc.bool, (a) => math.or(a, !a) === true);
+
+var negate = jsc.checkForall(jsc.bool, (a) => math.not(a) === !a);
+
+var xorIsFalseForEqualInput = jsc.checkForall(jsc.bool, (a) => math.xor(a, a) === false);
+var xorIsTrueForUnequalInput     = jsc.checkForall(jsc.bool, (a) => math.xor(a, !a) === true);
 
 
 // Util
@@ -103,7 +139,8 @@ var isZero = jsc.checkForall(jsc.integer, (a) => math.isZero(a) === (a === 0));
 
 console.log({sqrtIsReversible, additionIsCommutative, adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive, absIsPositive, absIsNotAlways0,
    modIsDonaldKnuth, modIsNotDivision, specificationWorks1, specificationWorks2, modImplementationHonorsSpecification, floorIsNotTheCulprit,
-   fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil,
+   ceilingIsAlwaysLargerOrEqual, fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil, unaryMinusInversesValue, cubedEqualsCubedCubeRoot, log2SucceedsForCommonIntegers,
+   normalLogSucceedsForCommonIntegers, sign,
    sortIsConsistent, isInteger, isNaN, isPositive, isNegative, isNumeric, isZero
 });
 
@@ -141,7 +178,7 @@ var matrixArb = (x, y) => jsc.bless({
 
 
 jsc.checkForall(matrixArb(), (x) => {
-    console.log(math.size(x));
+    //console.log(math.size(x));
     return true;
 });
 
@@ -189,5 +226,3 @@ var associativeOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), matr
 
 //Closure property of addition: A+B has the same dimansions as A and B
 var closureOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), (a,b) => math.deepEqual(math.size(math.add(a,b)),math.size(a)) && math.deepEqual(math.size(math.add(a,b)),math.size(b))); 
-
-
