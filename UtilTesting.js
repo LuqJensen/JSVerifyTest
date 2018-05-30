@@ -18,4 +18,5 @@ var isPositive = jsc.checkForall(jsc.nat, (a) => math.isPositive(a) === a > 0) ;
 
 var isZero = jsc.checkForall(jsc.integer, (a) => math.isZero(a) === (a === 0)); 
 
-console.log("IsInteger:", isInteger, "isNan:",  isNaN, "isNegative:", isNegative, "isNumeric:", isNumeric, "isPositive:", isPositive, "isZero:", isZero)
+console.log("\nUtil testing")
+console.log({isInteger, isNaN, isNegative, isNumeric, isPositive, isZero})

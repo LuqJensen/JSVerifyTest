@@ -18,6 +18,5 @@ var negate = jsc.checkForall(jsc.bool, (a) => math.not(a) === !a);
 var xorIsFalseForEqualInput = jsc.checkForall(jsc.bool, (a) => math.xor(a, a) === false);
 var xorIsTrueForUnequalInput = jsc.checkForall(jsc.bool, (a) => math.xor(a, !a) === true);
 
-console.log("dominationAnd:", dominationAnd, "identityAnd:", identityAnd, "idempotenAnd:", idempotentAnd, "negationAnd:", negationAnd)
-console.log("dominationOr:", dominationOr, "identityOr:", identityOr, "idempotentOr:", idempotentOr, "negationOr:", negationOr)
-console.log("negate:", negate, "xorIsFalseForEqualInput:", xorIsFalseForEqualInput, "xorIsTrueForUnequalInput:", xorIsTrueForUnequalInput)
+console.log("\nLogical testing")
+console.log({dominationAnd, identityAnd, idempotentAnd, negationAnd, dominationOr, identityOr, idempotentOr, negationOr, negate, xorIsFalseForEqualInput, xorIsTrueForUnequalInput})

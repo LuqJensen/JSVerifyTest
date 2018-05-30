@@ -4,8 +4,6 @@ var math = require('mathjs');
 //Arithmetic functions 
 //-------------------------------------------------------
 
-
-
 // Must use the framework's .equal function to compare outcomes from operations with imaginary numbers.
 var sqrtIsReversible = jsc.checkForall(jsc.integer, (a) => math.equal(math.multiply(math.sqrt(a), math.sqrt(a)), a));
 
@@ -131,16 +129,8 @@ var modImplementationHonorsSpecification = jsc.checkForall(jsc.integer, jsc.inte
 // That does not appear to be the case.
 var floorIsNotTheCulprit = jsc.checkForall(jsc.number, (a) => math.floor(a) <= a && a - math.floor(a) < 1);
 
-console.log("unaryMinusInversesSign:", unaryMinusInversesValue, "cubed=cubedCubeRoor:", cubedEqualsCubedCubeRoot, "log2SucceedsForCommenInts:", log2SucceedsForCommonIntegers)
-console.log("logSucceesForCommonInts:", normalLogSucceedsForCommonIntegers, "sign", sign, "sortIsConsistent:", sortIsConsistent)
-console.log("sqrtIsReversible:", sqrtIsReversible, "addIsCommutative:", additionIsCommutative, "add1TwiceEauals2Once:", adding1TwiceEquals2Once)
-console.log("addIsAssociative:", additionIsAssociative, "multIsDistributive:", multiplicationIsDistributive, "absIsPositive:", absIsPositive, "absIsNotAlways0:", absIsNotAlways0)
-console.log("ceilIs>=:", ceilingIsAlwaysLargerOrEqual, "fixIsCloserTo0:", fixIsAlwaysCloserToZero, "roundIsFloorOrCeil:", roundIsEitherFloorOrCeil)
-
-console.log("expLog:", expLog, "expM1Log:", expm1Log, "expExpm1:", expExpm1, "sqrPow:", sqrtPow)
-console.log("squareIsPositive:", squareIsPositive, "pow2IsPositive:", pow2IsPositive, "sqrtSquare:", sqrtSquare, "nthRootAndPow:", nthRootAndPow)
-
-console.log("\nModulus testing")
-console.log("modIsDoanldKnuth:", modIsDonaldKnuth, "modIsNotDivision:", modIsNotDivision, "specWorks1:", specificationWorks1, "specWorks2:", specificationWorks2)
-console.log("modImplementationHonorsSpec:", modImplementationHonorsSpecification, "floorIsNotCulprit:", floorIsNotTheCulprit)
+console.log("\nArithmetic testing")
+console.log({unaryMinusInversesValue, cubedEqualsCubedCubeRoot, log2SucceedsForCommonIntegers, normalLogSucceedsForCommonIntegers, sign, sortIsConsistent, sqrtIsReversible, additionIsCommutative,
+adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive, absIsPositive, absIsNotAlways0, ceilingIsAlwaysLargerOrEqual, fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil,
+expLog, expm1Log, expExpm1, sqrtPow, squareIsPositive, pow2IsPositive, sqrtSquare, nthRootAndPow, modIsDonaldKnuth, modIsNotDivision, specificationWorks1, specificationWorks2, modImplementationHonorsSpecification, floorIsNotTheCulprit})
 

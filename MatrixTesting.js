@@ -76,13 +76,13 @@ var associativeOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), matr
 //Closure property of addition: A+B has the same dimansions as A and B
 var closureOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), (a,b) => math.deepEqual(math.size(math.add(a,b)),math.size(a)) && math.deepEqual(math.size(math.add(a,b)),math.size(b))); 
 
+console.log("\nMatrix testing")
 //Deep equal functions 
-console.log("Deep equal function testing")
-console.log("deepEqualTrue:", deepEqualTrue, "deepEqualFale:", deepEqualFalse, "deepEqualOnNonSquareMatrices:", deepEqual1,"\n")
+console.log("\nDeep equal function testing")
+console.log({deepEqualTrue, deepEqualFalse, deepEqual1})
 //Scalar multiplication
-console.log("Matrix scalar multiplication testing")
-console.log("associativeMatrix:", associativeMatrix, "distributiveMatrix1:", distributiveMatrix1, "distributiveMatrix2:", distributiveMatrix1)
-console.log("matrixTimesOne:", matrixTimesOne, "zeroMatrixMultiply:", zeroMatrix, "closureMultiplication:", closureOfMultiplication, "\n")
+console.log("\nMatrix scalar multiplication testing")
+console.log({associativeMatrix, distributiveMatrix1, distributiveMatrix2, matrixTimesOne, zeroMatrix, closureOfMultiplication})
 //Matrix addition
-console.log("Matrix addition testing")
-console.log("commutativeAddition:", commutativeOfAddition, "assotiativeAddtion:", associativeOfAddition, "closureAddition:", closureOfAddition, "\n")
+console.log("\nMatrix addition testing")
+console.log({commutativeOfAddition, associativeOfAddition, closureOfAddition})
