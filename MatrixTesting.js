@@ -9,7 +9,7 @@ var math = require('mathjs');
 * parameters are passed. Generates matrix of x * y size, if parameters are passed
 */ 
 var matrixArb = (x, y) => jsc.bless({
-    generator: jsc.generator.bless(() => {
+    generator: () => {
         let xx = x;
         let yy = y;     
         if (x == null || y == null){
@@ -21,7 +21,7 @@ var matrixArb = (x, y) => jsc.bless({
             let child = Array.apply(null, new Array(yy));
             return child.map((c, d) => jsc.random(-(Math.pow(2,31) - 1), Math.pow(2,31) - 1));
         });
-    }),
+    },
     show: (val) => val
 });
 

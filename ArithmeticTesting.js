@@ -42,7 +42,7 @@ var absIsNotAlways0 = jsc.checkForall(jsc.integer, (a) => a < 0 ? a + math.abs(a
 var ceilingIsAlwaysLargerOrEqual = jsc.checkForall(jsc.number, (a) => math.ceil(a) >= a && a - math.floor(a) < 1);
 
 var fixIsAlwaysCloserToZero = jsc.checkForall(jsc.number, (a) => {
-    if (math.equal(a, 0)) 
+    if (a === 0 && math.fix(a) === 0) 
         return true;
     
     let result = math.fix(a);
@@ -125,18 +125,18 @@ var nthRootAndPow = jsc.checkForall(jsc.integer(1,9), jsc.integer(1,9), (a, b) =
 // According to the definition over at https://en.wikipedia.org/wiki/Modulo_operation
 // we can determine whether the implementation of mod always calculates a result with the same sign as the 
 // dividend or divisor, ie. uses truncation(fixation) or floor function. 
-var modIsDonaldKnuth = jsc.checkForall(jsc.integer(-(Math.pow(2,31) -1), 0), (a) => math.mod(a, 2) >= 0);
+var modIsDonaldKnuth = jsc.checkForall(jsc.integer, (a) => math.mod(a, 2) >= 0);
 
 // Oops! .mod does not support negative divisors, according to docs: http://mathjs.org/docs/reference/functions/mod.html
 // this module is implemented as "x - y * floor(x / y)", but jsverify finds a counterexample where "a = -1"
 // according to WolframAlpha the stated expression equals "0" - http://www.wolframalpha.com/input/?i=(-1)+-+(-1)+*+floor((-1)+%2F+(-1))
-var modIsNotDivision = jsc.checkForall(jsc.integer, (a) => a === 0 || math.mod(a, a) === 0);
+var modIsNotDivision = jsc.checkForall(jsc.suchthat(jsc.integer, (a) => a !== 0), (a) => math.mod(a, a) === 0);
 // Lets check if the specification works...
 var specificationWorks1 = jsc.checkForall(jsc.integer(-(Math.pow(2,31) -1), 0), (a) => a - 2 * Math.floor(a / 2) >= 0);
-var specificationWorks2 = jsc.checkForall(jsc.integer, (a) => a === 0 || a - a * Math.floor(a / a) === 0);
+var specificationWorks2 = jsc.checkForall(jsc.suchthat(jsc.integer, (a) => a !== 0), (a) => a - a * Math.floor(a / a) === 0);
 // We are unable to determine whether the implementation is Donald Knuth or Raymond T. Boute's Euclidean definition.
 // But one thing is certain, the implementation is lousy as it does not satisfy the stated specification.
-var modImplementationHonorsSpecification = jsc.checkForall(jsc.integer, jsc.integer, (a, b) => b === 0 || math.mod(a, b) === a - b * Math.floor(a / b));
+var modImplementationHonorsSpecification = jsc.checkForall(jsc.integer, jsc.suchthat(jsc.integer, (b) => b !== 0), (a, b) => math.mod(a, b) === a - b * Math.floor(a / b));
 
 // In the docs it is stated that the floor function is used for the mod function,
 // which could indicate a bad implementation of the floor function. 

@@ -20,29 +20,22 @@ var xorIsTrueForUnequalInput     = jsc.checkForall(jsc.bool, (a) => math.xor(a, 
 
 
 
-console.log({sqrtIsReversible, additionIsCommutative, adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive, absIsPositive, absIsNotAlways0,
-   modIsDonaldKnuth, modIsNotDivision, specificationWorks1, specificationWorks2, modImplementationHonorsSpecification, floorIsNotTheCulprit,
-   ceilingIsAlwaysLargerOrEqual, fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil, unaryMinusInversesValue, cubedEqualsCubedCubeRoot, log2SucceedsForCommonIntegers,
-   normalLogSucceedsForCommonIntegers, sign,
-   sortIsConsistent, isInteger, isNaN, isPositive, isNegative, isNumeric, isZero
-});
-
 /*
 *   Example generator. Generates random hex numbers of size = maxLength 
 */
 var hexArb = (maxLength) => jsc.bless({
-    generator: jsc.generator.bless(() => {
+    generator: () => {
         let maxInt = Math.pow(2, maxLength * 4);
         return jsc.random(0, maxInt).toString(16).toUpperCase();
-    }),
+    },
     show: (val) => val
 });
-/*
+
 jsc.checkForall(hexArb(8), (x) => {
     console.log(x);
     return true;
 });
-*/
+
 
 //Matrix properties
 //-------------------------------------------------------

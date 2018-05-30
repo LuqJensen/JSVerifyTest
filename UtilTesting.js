@@ -14,7 +14,7 @@ var isNegative = jsc.checkForall(jsc.integer, (a) => math.isNegative(a) === a < 
 var isNumeric = jsc.checkForall(jsc.number, (a) => math.isNumeric(a));
 
 //0 is not positive pr. definition
-var isPositive = jsc.checkForall(jsc.nat, (a) => math.isPositive(a) === a > 0) ;
+var isPositive = jsc.checkForall(jsc.suchthat(jsc.nat, (a) => a > 0), (a) => math.isPositive(a)) ;
 
 var isZero = jsc.checkForall(jsc.integer, (a) => math.isZero(a) === (a === 0)); 
 
