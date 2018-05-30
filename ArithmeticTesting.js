@@ -16,8 +16,17 @@ var adding1TwiceEquals2Once = jsc.checkForall(jsc.integer, (a) => math.add(math.
 // adding1TwiceEquals2Once cannot determine if the implementation differs in logic for low and high input values. Checking associativity will prevent that.
 var additionIsAssociative = jsc.checkForall(jsc.integer, jsc.integer, jsc.integer, (a, b, c) => math.add(math.add(a, b), c) === math.add(a, math.add(b, c)));
 
-//a*b+c = a+b*c
+//a*(b+c)=a*b+a*c
 var multiplicationIsDistributive = jsc.checkForall(jsc.integer, jsc.integer, jsc.integer, (a, b, c) => math.multiply(a, b + c) === math.multiply(a, b) + math.multiply(a, c));
+
+//a*b = b*a
+var multiplicationIsCommutative = jsc.checkForall(jsc.integer, jsc.integer, (a,b) => math.equal(math.multiply(a,b), math.multiply(b,a))); 
+
+//(a*b)*c = a*(b*c)
+var multplicationIsAssociative = jsc.checkForall(jsc.integer, jsc.integer, jsc.integer, (a,b,c) => math.equal(math.multiply(c, math.multiply(a,b)), math.multiply(a, math.multiply(b,c))));
+
+//a*1 = a
+var multiplicativeIdentity = jsc.checkForall(jsc.integer, (a) => math.equal(math.multiply(a, 1), a));
 
 //abs(a)>=0
 var absIsPositive = jsc.checkForall(jsc.integer, (a) => math.abs(a) >= 0);
@@ -131,6 +140,5 @@ var floorIsNotTheCulprit = jsc.checkForall(jsc.number, (a) => math.floor(a) <= a
 
 console.log("\nArithmetic testing")
 console.log({unaryMinusInversesValue, cubedEqualsCubedCubeRoot, log2SucceedsForCommonIntegers, normalLogSucceedsForCommonIntegers, sign, sortIsConsistent, sqrtIsReversible, additionIsCommutative,
-adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive, absIsPositive, absIsNotAlways0, ceilingIsAlwaysLargerOrEqual, fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil,
+adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive,multiplicationIsCommutative, multplicationIsAssociative, multiplicativeIdentity, absIsPositive, absIsNotAlways0, ceilingIsAlwaysLargerOrEqual, fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil,
 expLog, expm1Log, expExpm1, sqrtPow, squareIsPositive, pow2IsPositive, sqrtSquare, nthRootAndPow, modIsDonaldKnuth, modIsNotDivision, specificationWorks1, specificationWorks2, modImplementationHonorsSpecification, floorIsNotTheCulprit})
-
