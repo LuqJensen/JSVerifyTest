@@ -25,14 +25,15 @@ var matrixArb = (x, y) => jsc.bless({
     show: (val) => val
 });
 
-/*
+
 jsc.checkForall(matrixArb(), (x) => {
     //console.log(math.size(x));
+    //console.log(x)
     return true;
 });
-*/
 
-//Test that deepequal always returns true on equal matrices 
+
+//Test that deepequal returns true on equal matrices 
 var deepEqualTrue = jsc.checkForall(matrixArb(), (a) => math.deepEqual(a,a));
 
 //Test that deepequal returns false on unequal matrices
@@ -73,8 +74,9 @@ var commutativeOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), (a,b
 //Associative property of addition: A+(B+C) = (A+B)+C
 var associativeOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), matrixArb(5,5), (a,b,c) => math.deepEqual(math.add(a, math.add(b,c)),math.add(math.add(a,b),c)));
 
-//Closure property of addition: A+B has the same dimansions as A and B
+//Closure property of addition: A+B has the same dimensions as A and B
 var closureOfAddition = jsc.checkForall(matrixArb(5,5), matrixArb(5,5), (a,b) => math.deepEqual(math.size(math.add(a,b)),math.size(a)) && math.deepEqual(math.size(math.add(a,b)),math.size(b))); 
+
 
 console.log("\nMatrix testing")
 //Deep equal functions 

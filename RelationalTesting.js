@@ -19,5 +19,5 @@ var smallerEqInts = jsc.checkForall(jsc.integer, jsc.integer, (a,b) => math.smal
 //Test unequal: a!=b
 var unequalInts = jsc.checkForall(jsc.integer, jsc.integer, (a,b) => math.unequal(a,b) === (a !== b)); 
 
-console.log("\nRelation testing")
+console.log("\nRelational testing")
 console.log({largerInts, largerEqInts, smallerInts, smallerEqInts, unequalInts})
