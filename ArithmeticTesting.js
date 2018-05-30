@@ -8,13 +8,18 @@ var math = require('mathjs');
 var sqrtIsReversible = jsc.checkForall(jsc.integer, (a) => math.equal(math.multiply(math.sqrt(a), math.sqrt(a)), a));
 
 // Proves that .add is not implemented as ex. minus or division.
+//a+b = b+a
 var additionIsCommutative = jsc.checkForall(jsc.integer, jsc.integer, (a, b) => math.add(a, b) === math.add(b, a));
+
+//(a+b)+c = a+(b+c)
+// adding1TwiceEquals2Once cannot determine if the implementation differs in logic for low and high input values. Checking associativity will prevent that.
+var additionIsAssociative = jsc.checkForall(jsc.integer, jsc.integer, jsc.integer, (a, b, c) => math.add(math.add(a, b), c) === math.add(a, math.add(b, c)));
+
+//a+0=a
+var additionIdentity = jsc.checkForall(jsc.integer, (a) => math.equal(math.add(a, 0), a));
 
 // One way to ascertain that .add is not implemented as multiplication.
 var adding1TwiceEquals2Once = jsc.checkForall(jsc.integer, (a) => math.add(math.add(a, 1), 1) === math.add(a, 2));
-
-// adding1TwiceEquals2Once cannot determine if the implementation differs in logic for low and high input values. Checking associativity will prevent that.
-var additionIsAssociative = jsc.checkForall(jsc.integer, jsc.integer, jsc.integer, (a, b, c) => math.add(math.add(a, b), c) === math.add(a, math.add(b, c)));
 
 //a*(b+c)=a*b+a*c
 var multiplicationIsDistributive = jsc.checkForall(jsc.integer, jsc.integer, jsc.integer, (a, b, c) => math.multiply(a, b + c) === math.multiply(a, b) + math.multiply(a, c));
@@ -140,5 +145,5 @@ var floorIsNotTheCulprit = jsc.checkForall(jsc.number, (a) => math.floor(a) <= a
 
 console.log("\nArithmetic testing")
 console.log({unaryMinusInversesValue, cubedEqualsCubedCubeRoot, log2SucceedsForCommonIntegers, normalLogSucceedsForCommonIntegers, sign, sortIsConsistent, sqrtIsReversible, additionIsCommutative,
-adding1TwiceEquals2Once, additionIsAssociative, multiplicationIsDistributive,multiplicationIsCommutative, multplicationIsAssociative, multiplicativeIdentity, absIsPositive, absIsNotAlways0, ceilingIsAlwaysLargerOrEqual, fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil,
+adding1TwiceEquals2Once, additionIsAssociative,additionIdentity, multiplicationIsDistributive,multiplicationIsCommutative, multplicationIsAssociative, multiplicativeIdentity, absIsPositive, absIsNotAlways0, ceilingIsAlwaysLargerOrEqual, fixIsAlwaysCloserToZero, roundIsEitherFloorOrCeil,
 expLog, expm1Log, expExpm1, sqrtPow, squareIsPositive, pow2IsPositive, sqrtSquare, nthRootAndPow, modIsDonaldKnuth, modIsNotDivision, specificationWorks1, specificationWorks2, modImplementationHonorsSpecification, floorIsNotTheCulprit})
